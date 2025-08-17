@@ -1,0 +1,4 @@
+db.sh
+./data
+./src/ai_analyser.py
+*.pyc

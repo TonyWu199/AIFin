@@ -7,10 +7,11 @@ import csv
 
 # 为database模块创建独立的日志配置
 logger = logging.getLogger('db.database')
-logger.setLevel(logging.INFO)
 
-# 只在logger没有处理器时添加处理器
+# 只有在logger没有处理器时才添加处理器，避免重复
 if not logger.handlers:
+    logger.setLevel(logging.INFO)
+    
     # 创建控制台处理器
     console_handler = logging.StreamHandler()
     console_handler.setLevel(logging.INFO)

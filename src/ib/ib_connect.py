@@ -19,28 +19,21 @@ if not os.path.exists(log_dir):
 
 # 为ib_connect模块创建独立的日志配置
 logger = logging.getLogger('ib.ib_connect')
-logger.setLevel(logging.INFO)
 
-# 清除现有的处理器（如果有的话）
-for handler in logger.handlers[:]:
-    logger.removeHandler(handler)
-
-# 创建文件处理器
-file_handler = logging.FileHandler(os.path.join(log_dir, 'ib_connect.log'), encoding='utf-8')
-file_handler.setLevel(logging.INFO)
-
-# 创建控制台处理器
-console_handler = logging.StreamHandler()
-console_handler.setLevel(logging.INFO)
-
-# 创建日志格式
-formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-file_handler.setFormatter(formatter)
-console_handler.setFormatter(formatter)
-
-# 添加处理器到logger
-logger.addHandler(file_handler)
-logger.addHandler(console_handler)
+# 只有在logger没有处理器时才添加处理器，避免重复
+if not logger.handlers:
+    logger.setLevel(logging.INFO)
+    
+    # 创建文件处理器
+    file_handler = logging.FileHandler(os.path.join(log_dir, 'ib_connect.log'), encoding='utf-8')
+    file_handler.setLevel(logging.INFO)
+    
+    # 创建日志格式
+    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    file_handler.setFormatter(formatter)
+    
+    # 添加处理器到logger
+    logger.addHandler(file_handler)
 
 
 class IBServer:
@@ -52,7 +45,7 @@ class IBServer:
         self.client_id = client_id
         self.ib = IB()
         self.connected = False
-        self.save_dir = "../data"
+        self.save_dir = os.path.join(os.getcwd(), "data")
         
     def connect(self) -> bool:
         """Connect to IB Gateway/TWS"""
