@@ -1,0 +1,7 @@
+ib_insync
+pandas
+openai
+tiktoken
+flask
+flask-cors
+mysql-connector-python
